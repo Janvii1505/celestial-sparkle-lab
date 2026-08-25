@@ -64,153 +64,177 @@ function Home() {
 
 /* ---------------- HERO ---------------- */
 
-const HERO_WORDS = ["glow.", "energy.", "immunity.", "focus.", "joy."];
+const HERO_ROTATE = ["glow", "energy", "immunity", "focus", "calm"];
+
+const HERO_STATS = [
+  { k: "5000 mcg", v: "Biotin per serving" },
+  { k: "60", v: "Gummies per tube" },
+  { k: "4.8/5", v: "From 4,356 reviews" },
+];
 
 function Hero() {
-  const [wordIndex, setWordIndex] = useState(0);
+  const [word, setWord] = useState(0);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const id = setInterval(() => setWordIndex((i) => (i + 1) % HERO_WORDS.length), 2200);
+    const id = setInterval(() => setWord((i) => (i + 1) % HERO_ROTATE.length), 2400);
     return () => clearInterval(id);
   }, []);
 
   const onMove = (e: React.MouseEvent<HTMLElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
-    setTilt({
-      x: (e.clientX - r.left) / r.width - 0.5,
-      y: (e.clientY - r.top) / r.height - 0.5,
-    });
+    setTilt({ x: (e.clientX - r.left) / r.width - 0.5, y: (e.clientY - r.top) / r.height - 0.5 });
   };
 
   return (
     <section
       onMouseMove={onMove}
       onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-      className="relative overflow-hidden bg-background pb-20 pt-12 lg:pb-28 lg:pt-16"
+      className="relative overflow-hidden bg-ink text-cream"
     >
-      <div className="hero-orb pointer-events-none absolute left-1/2 top-4 h-[620px] w-[620px] -translate-x-1/2 blob bg-primary/25 blur-[100px]" />
-      <div className="hero-orb pointer-events-none absolute -left-28 bottom-0 h-80 w-80 blob bg-secondary/20 blur-[90px] [animation-delay:-4s]" />
-      <div className="hero-orb pointer-events-none absolute -right-20 top-28 h-96 w-96 blob bg-leaf/15 blur-[90px] [animation-delay:-8s]" />
-      <div className="pointer-events-none absolute inset-0 hero-grid opacity-[0.35]" />
+      {/* Ambient light */}
+      <div className="aurora pointer-events-none absolute -left-40 -top-52 h-[760px] w-[760px] blob bg-primary/25 blur-[120px]" />
+      <div className="aurora pointer-events-none absolute -right-32 top-24 h-[560px] w-[560px] blob bg-secondary/20 blur-[120px] [animation-delay:-7s]" />
+      <div className="aurora pointer-events-none absolute bottom-[-14rem] left-1/3 h-[520px] w-[520px] blob bg-leaf/12 blur-[130px] [animation-delay:-13s]" />
+      <div className="pointer-events-none absolute inset-0 hero-grid opacity-[0.14]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background/95" />
 
-      <div className="relative mx-auto grid max-w-[1400px] items-center gap-14 px-5 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
+      <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 px-5 pb-28 pt-16 lg:grid-cols-[1.02fr_0.98fr] lg:gap-10 lg:px-10 lg:pb-36 lg:pt-24">
         {/* Copy */}
-        <div className="relative z-10 text-center lg:text-left">
-          <div className="rise flex justify-center lg:justify-start">
-            <Eyebrow className="bg-card/70 backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5 animate-pulse text-primary" /> 60 gummies · real fruit flavours
+        <div className="relative z-10">
+          <div className="mask-rise">
+            <Eyebrow className="border-cream/15 bg-cream/[0.06] text-cream/70 backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5 text-primary" /> Est. 2023 · Made in India
             </Eyebrow>
           </div>
 
-          <h1 className="display-xl mt-7 text-[13vw] leading-[0.86] sm:text-[9vw] lg:text-[6.4rem]">
-            {["Chew", "your", "way", "to"].map((w, i) => (
-              <span key={w} className="mr-[0.22em] inline-block" style={{ animation: `rise-in 0.9s ${i * 110}ms both` }}>
-                {w}
+          <h1 className="mt-8 font-display text-[clamp(2.9rem,9vw,5.9rem)] font-extrabold leading-[0.9] tracking-[-0.045em]">
+            <span className="mask-rise block [--d:80ms]">A daily ritual</span>
+            <span className="mask-rise block [--d:200ms]">
+              worth <span className="italic font-semibold tracking-[-0.02em]">savouring</span>
+            </span>
+            <span className="mask-rise mt-2 flex flex-wrap items-baseline gap-x-4 [--d:320ms]">
+              <span className="text-[0.42em] font-bold uppercase tracking-[0.3em] text-cream/45">for your</span>
+              <span className="relative inline-block h-[1.02em] min-w-[7.5em] overflow-hidden align-bottom">
+                {HERO_ROTATE.map((w, i) => (
+                  <span
+                    key={w}
+                    aria-hidden={i !== word}
+                    className={cn(
+                      "text-gradient-gold absolute inset-x-0 bottom-0 transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+                      i === word ? "translate-y-0 opacity-100 blur-0" : "translate-y-[110%] opacity-0 blur-[8px]",
+                    )}
+                  >
+                    {w}.
+                  </span>
+                ))}
               </span>
-            ))}
-            <span className="relative block h-[1.05em] overflow-hidden">
-              {HERO_WORDS.map((w, i) => (
-                <span
-                  key={w}
-                  aria-hidden={i !== wordIndex}
-                  className={cn(
-                    "text-gradient-gold absolute inset-x-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:text-left",
-                    i === wordIndex
-                      ? "translate-y-0 opacity-100 blur-0"
-                      : "translate-y-full opacity-0 blur-[6px]",
-                  )}
-                >
-                  {w}
-                </span>
-              ))}
             </span>
           </h1>
 
-          <p
-            className="mx-auto mt-7 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg lg:mx-0"
-            style={{ animation: "rise-in 0.9s 520ms both" }}
-          >
-            Delicious daily gummies made with real fruit flavours and actives that actually earn their place in
-            your routine.
+          <p className="mask-rise mt-8 max-w-md text-base leading-relaxed text-cream/65 sm:text-lg [--d:460ms]">
+            Chef-crafted gummies with real fruit flavour and actives listed to the milligram. Nutrition you look
+            forward to, not nutrition you endure.
           </p>
 
-          <div
-            className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start"
-            style={{ animation: "rise-in 0.9s 640ms both" }}
-          >
+          <div className="mask-rise mt-10 flex flex-wrap items-center gap-3 [--d:580ms]">
             <Link to="/shop">
-              <BrandButton variant="solid" size="lg" className="group">
-                Shop Gummies
+              <BrandButton variant="gold" size="lg" className="group">
+                Shop the range
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </BrandButton>
             </Link>
             <a href="#flavours">
-              <BrandButton variant="outline" size="lg">
-                Explore Flavours
+              <BrandButton
+                variant="ghost"
+                size="lg"
+                className="border border-cream/20 text-cream hover:bg-cream/10"
+              >
+                Taste the flavours
               </BrandButton>
             </a>
           </div>
 
-          <div
-            className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 lg:justify-start"
-            style={{ animation: "rise-in 0.9s 760ms both" }}
-          >
-            <Rating value={4.8} count={4356} />
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              <Leaf className="h-4 w-4 text-leaf" /> 100% Vegetarian
-            </div>
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              <Truck className="h-4 w-4 text-secondary" /> Free over {inr(499)}
-            </div>
-          </div>
+          <dl className="mask-rise mt-14 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-2xl border border-cream/10 bg-cream/[0.04] backdrop-blur [--d:700ms]">
+            {HERO_STATS.map((s) => (
+              <div key={s.k} className="px-4 py-5">
+                <dt className="font-display text-xl font-extrabold text-primary sm:text-2xl">{s.k}</dt>
+                <dd className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-cream/50">{s.v}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        {/* Visual */}
-        <div className="relative z-10" style={{ animation: "rise-in 1s 200ms both" }}>
+        {/* Visual — arch frame */}
+        <div className="relative z-10 [animation:rise-in_1.1s_260ms_both]">
           <div
-            className="relative mx-auto w-[min(86vw,480px)] transition-transform duration-300 ease-out"
-            style={{ transform: `translate3d(${tilt.x * 22}px, ${tilt.y * 18}px, 0)` }}
+            className="relative mx-auto w-[min(84vw,470px)] transition-transform duration-500 ease-out"
+            style={{ transform: `translate3d(${tilt.x * 26}px, ${tilt.y * 20}px, 0)` }}
           >
-            <div className="spin-slow absolute inset-x-4 bottom-4 top-8 blob bg-[image:var(--gradient-gold)] opacity-90" />
-            <img
-              src={IMG.multi}
-              alt="Sonrup Biotin + Multivitamin gummies"
-              className="float-slow relative z-10 w-full drop-shadow-[0_40px_60px_rgba(40,26,10,0.35)]"
-            />
-
-            <div
-              className="absolute -left-4 top-16 z-20 rounded-2xl bg-card px-4 py-3 shadow-[var(--shadow-soft)] sm:-left-8"
-              style={{ transform: `translate3d(${tilt.x * -42}px, ${tilt.y * -34}px, 0)` }}
-            >
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Biotin</p>
-              <p className="font-display text-lg font-extrabold">5000 mcg</p>
+            <div className="spin-slow absolute -inset-6 rounded-full border border-dashed border-primary/25" />
+            <div className="relative overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] border border-cream/12 bg-cream/[0.05] p-3 shadow-[var(--shadow-lift)] backdrop-blur">
+              <div className="absolute inset-0 bg-[image:var(--gradient-glow)] opacity-70" />
+              <img
+                src={IMG.multi}
+                alt="Sonrup Biotin + Multivitamin gummies tube"
+                className="float-slow relative z-10 aspect-4/5 w-full rounded-t-[999px] rounded-b-[2rem] object-cover"
+              />
+              <div className="sheen pointer-events-none absolute inset-0 rounded-t-[999px] rounded-b-[2.5rem]" />
             </div>
 
             <div
-              className="absolute -right-3 bottom-24 z-20 rounded-2xl bg-ink px-4 py-3 text-cream shadow-[var(--shadow-lift)] sm:-right-6"
-              style={{ transform: `translate3d(${tilt.x * -58}px, ${tilt.y * -46}px, 0)` }}
+              className="absolute -left-5 top-24 z-20 rounded-2xl border border-cream/10 bg-ink/85 px-4 py-3 shadow-[var(--shadow-lift)] backdrop-blur sm:-left-10"
+              style={{ transform: `translate3d(${tilt.x * -46}px, ${tilt.y * -36}px, 0)` }}
             >
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Per tube</p>
-              <p className="font-display text-lg font-extrabold">60 gummies</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Third-party tested</p>
+              <p className="font-display text-base font-extrabold text-cream">Every single batch</p>
+            </div>
+
+            <div
+              className="absolute -right-4 bottom-20 z-20 flex items-center gap-3 rounded-2xl bg-cream px-4 py-3 text-ink shadow-[var(--shadow-lift)] sm:-right-9"
+              style={{ transform: `translate3d(${tilt.x * -62}px, ${tilt.y * -48}px, 0)` }}
+            >
+              <Leaf className="h-5 w-5 text-leaf" />
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Pectin based</p>
+                <p className="font-display text-base font-extrabold">100% vegetarian</p>
+              </div>
             </div>
 
             <img
               src={IMG.shilajit}
-              alt="Sonrup Himalayan Shilajit gummies tube"
-              className="float-fast absolute -left-10 bottom-0 z-20 hidden h-40 w-32 rotate-[-9deg] rounded-[1.6rem] object-cover shadow-[var(--shadow-lift)] sm:block"
+              alt="Sonrup Himalayan Shilajit gummies"
+              className="float-fast absolute -left-8 bottom-2 z-20 hidden h-32 w-24 rotate-[-8deg] rounded-2xl object-cover shadow-[var(--shadow-lift)] lg:block"
             />
             <img
               src={IMG.kids}
-              alt="Sonrup Kid's Multivitamin gummies tube"
-              className="float-slow absolute -right-10 top-4 z-20 hidden h-40 w-32 rotate-[8deg] rounded-[1.6rem] object-cover shadow-[var(--shadow-lift)] sm:block [animation-delay:-2s]"
+              alt="Sonrup Kid's Multivitamin gummies"
+              className="float-slow absolute -right-6 -top-4 z-20 hidden h-32 w-24 rotate-[9deg] rounded-2xl object-cover shadow-[var(--shadow-lift)] lg:block [animation-delay:-2.5s]"
             />
           </div>
+        </div>
+      </div>
+
+      {/* Kinetic footer line */}
+      <div className="relative overflow-hidden border-y border-cream/10 py-3">
+        <div className="marquee-track flex w-max gap-8 whitespace-nowrap">
+          {[0, 1].map((k) => (
+            <div key={k} className="flex gap-8">
+              {["Biotin + Multivitamin", "Himalayan Shilajit", "Kid's Immunity", "Real fruit flavours", "No proprietary blends"].map(
+                (t) => (
+                  <span key={t} className="text-[11px] font-bold uppercase tracking-[0.28em] text-cream/45">
+                    {t} <span className="ml-8 text-primary">✦</span>
+                  </span>
+                ),
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
+
 
 /* ---------------- TRUST ---------------- */
 
