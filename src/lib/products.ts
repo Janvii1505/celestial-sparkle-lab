@@ -323,28 +323,28 @@ export const orders = [
     date: "14 Aug 2026",
     status: "Delivered" as const,
     total: 1548,
-    items: [products[0], products[1]],
+    items: [products[0]!, products[1]!],
   },
   {
     id: "SNR-100511",
     date: "20 Aug 2026",
     status: "Shipped" as const,
     total: 599,
-    items: [products[2]],
+    items: [products[2]!],
   },
   {
     id: "SNR-100530",
     date: "23 Aug 2026",
     status: "Processing" as const,
     total: 899,
-    items: [products[1]],
+    items: [products[1]!],
   },
   {
     id: "SNR-100294",
     date: "02 Jul 2026",
     status: "Cancelled" as const,
     total: 649,
-    items: [products[0]],
+    items: [products[0]!],
   },
 ];
 

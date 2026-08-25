@@ -18,7 +18,7 @@ const SORTS = [
 ];
 
 export const Route = createFileRoute("/shop")({
-  validateSearch: (search: Record<string, unknown>): ShopSearch => ({
+  validateSearch: (search: Partial<ShopSearch>): ShopSearch => ({
     q: typeof search.q === "string" ? search.q : "",
     goal: typeof search.goal === "string" ? search.goal : "",
     sort: typeof search.sort === "string" ? search.sort : "featured",

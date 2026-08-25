@@ -75,7 +75,7 @@ export function Header() {
               <Link
                 key={item.label}
                 to={item.to}
-                search={"search" in item ? (item.search as never) : undefined}
+                {...("search" in item ? { search: item.search as never } : {})}
                 className="group relative text-[12px] font-bold uppercase tracking-[0.16em] text-foreground/80 transition-colors hover:text-foreground"
               >
                 {item.label}
@@ -179,7 +179,7 @@ export function Header() {
               <Link
                 key={item.label}
                 to={item.to}
-                search={"search" in item ? (item.search as never) : undefined}
+                {...("search" in item ? { search: item.search as never } : {})}
                 onClick={() => setMenu(false)}
                 className="display-xl border-b border-border/60 py-4 text-3xl transition-colors hover:text-secondary"
                 style={{ animation: menu ? `rise-in 0.5s ${i * 60}ms both` : undefined }}

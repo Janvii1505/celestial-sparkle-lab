@@ -22,8 +22,8 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
           setVisible(true);
           io.disconnect();
         }
@@ -196,7 +196,7 @@ export function Badge({ children, token = "primary" }: { children: ReactNode; to
     <span
       className={cn(
         "rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em]",
-        tone[token] ?? tone.primary,
+        tone[token] ?? tone["primary"],
       )}
     >
       {children}

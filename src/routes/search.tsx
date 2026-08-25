@@ -7,7 +7,7 @@ import { posts, products } from "@/lib/products";
 type S = { q: string };
 
 export const Route = createFileRoute("/search")({
-  validateSearch: (search: Record<string, unknown>): S => ({ q: typeof search.q === "string" ? search.q : "" }),
+  validateSearch: (search: Partial<S>): S => ({ q: typeof search.q === "string" ? search.q : "" }),
   head: () => ({
     meta: [
       { title: "Search — Sonrup Nutrition" },
